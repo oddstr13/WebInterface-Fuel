@@ -1,0 +1,58 @@
+/***************************************************************
+RESET BROWSER VALUES SO EVERYONE IS THE SAME
+***************************************************************/
+@import url(reset.css);
+@import url(common.css);
+
+
+/***************************************************************
+TAG STYLES
+***************************************************************/
+body { background: url(../images/wa_bg.jpg) no-repeat top center; font-family: Arial, 'Lucida Grande', sans-serif; color: #021324; }
+h1 { font-size: 40px; }
+h2 { font-size: 24px; color: #021324; margin-bottom: 15px; }
+h3 { font-size: 16px; color: #021324; margin-bottom: 5px; font-weight: normal; }
+h4 { font-size: 12px; margin-bottom: 5px; }
+a { color: #dc461c; }
+p { margin-bottom: 15px; line-height: 16px; }
+blockquote { font-style: italic; margin-bottom: 20px; }
+cite { display: block; font-size: 12px; color: #e95c18; margin-top: 10px; } 
+input { padding: 2px; }
+ul { margin: 0 0 20px 15px; }
+li { list-style: disc; }
+input, textarea { border: 1px solid #ccc; }
+textarea { font-family: Arial, 'Lucida Grande', sans-serif; color: #333; font-size: 12px; }
+
+
+/***************************************************************
+GENERIC CLASSES 
+***************************************************************/
+.left { float: left; }
+.right { float: right; }
+.block { margin-bottom: 30px; }
+a.readmore { display: block; }
+table.form td { padding: 3px 5px 3px 0; }
+
+
+/***************************************************************
+SPECIFIC AREAS
+***************************************************************/
+div#error_404 { margin: -100px 0 0 340px; }
+div#container { }
+div#container_inner { position: relative; width: 960px; margin: auto; padding: 10px; }
+div#header { text-align: center; padding: 20px; background: #fff; position: relative; border-radius: 15px; -moz-border-radius: 15px; border:medium solid #333;}
+
+
+
+div#main { background: #fff; margin-top: 10px; padding: 20px; border-radius: 15px; -moz-border-radius: 15px; border:medium solid #333;}
+div#main h3 { color: #021324; font-weight: bold; font-size: 14px; margin-bottom: 0px; }
+div#main li { background-repeat: no-repeat; padding-left: 44px; }
+
+div#features { padding-top: 120px; }
+div#for_clients { width: 342px; float: left; padding-right: 20px; }
+div#for_developers { width: 342px; float: left;  padding-left: 20px;}
+
+/* footer */
+div#footer { color: #021324; margin-top: 10px; background: #fff; padding: 20px; text-align: center; border-radius: 15px; -moz-border-radius: 15px; border:medium solid #333;}
+
+
