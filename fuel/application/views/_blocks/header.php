@@ -46,7 +46,10 @@
 	<div id="container_inner">
 		<div id="header">	
 			<h1>Web Auction</h1>
-		
+		</div>
+		<div id="navigation" class="menu">
+			<?php echo fuel_nav(); ?>
 		</div>
 	
 		<div id="main">
+			
