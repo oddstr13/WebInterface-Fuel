@@ -5,12 +5,12 @@
 $config['fuel_path'] = 'fuel/';
 
 // the name to be displayed on the top left of the admin
-$config['site_name'] = 'My Website';
+$config['site_name'] = 'Web Auction';
 
 // options are cms, views, auto... cms pulls views and variables from the database,
 // views mode pulls views from the views folder and variables from the _variables folder.
 // The auto option will first check the database for a page and if it doesn't exist or is not published, it will then check for a corresponding view file.
-$config['fuel_mode'] = 'views';
+$config['fuel_mode'] = 'auto';
 
 // used for system emails. Needs to be overwritten by MY_fuel.php
 $config['domain'] = '';
