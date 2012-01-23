@@ -8,7 +8,7 @@ RESET BROWSER VALUES SO EVERYONE IS THE SAME
 /***************************************************************
 TAG STYLES
 ***************************************************************/
-body { background: url(../images/wa_bg.jpg) no-repeat top center; font-family: Arial, 'Lucida Grande', sans-serif; color: #021324; }
+body { background: url(../images/wa_bg2.jpg) no-repeat top center; background-color:#FFFFFF; font-family: Arial, 'Lucida Grande', sans-serif; color: #021324; }
 h1 { font-size: 40px; }
 h2 { font-size: 24px; color: #021324; margin-bottom: 15px; }
 h3 { font-size: 16px; color: #021324; margin-bottom: 5px; font-weight: normal; }
@@ -39,12 +39,14 @@ SPECIFIC AREAS
 ***************************************************************/
 div#error_404 { margin: -100px 0 0 340px; }
 div#container { }
-div#container_inner { position: relative; width: 960px; margin: auto; padding: 10px; }
-div#header { text-align: center; padding: 20px; background: #fff; position: relative; border-radius: 15px; -moz-border-radius: 15px; border:medium solid #333;}
+div#container_inner { position: relative; width: auto;}
+div#header { text-align: center; padding: 20px; width: 500px; margin:auto; background: #fff; position: relative; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; -moz-border-bottom-left-radius: 15px; -moz-border-bottom-right-radius: 15px; background-color:rgba(230,230,255,0.4); }
 
-div#navigation { text-align: center; margin-top: 10px; height: 35px; padding: 0px;}
+div#navigation { text-align: center; margin-top: 259px; margin-left: 20px; height: 35px; padding: 0px; font-size:18px; }
 
-div#main { background: #fff; margin-top: 10px; padding: 20px; border-radius: 15px; -moz-border-radius: 15px; border:medium solid #333;}
+div#userInfoBox { float:right; width: 400px; text-align: center; margin-top: 80px; padding: 10px; font-size:18px; border-bottom-left-radius: 15px; border-top-left-radius: 15px; -moz-border-bottom-left-radius: 15px; -moz-border-top-left-radius: 15px; background-color:rgba(230,230,255,0.6);}
+
+div#main { background: #fff; margin-top: 20px; padding: 20px; font-size:16px;}
 div#main h3 { color: #021324; font-weight: bold; font-size: 14px; margin-bottom: 0px; }
 div#main li { background-repeat: no-repeat; padding-left: 44px; }
 
@@ -53,7 +55,7 @@ div#for_clients { width: 342px; float: left; padding-right: 20px; }
 div#for_developers { width: 342px; float: left;  padding-left: 20px;}
 
 /* footer */
-div#footer { color: #021324; margin-top: 10px; background: #fff; padding: 20px; text-align: center; border-radius: 15px; -moz-border-radius: 15px; border:medium solid #333;}
+div#footer { color: #021324; margin-top: 10px; background: #fff; padding: 20px; text-align: center;}
 
 .menu{
     width: 100%;
@@ -73,22 +75,23 @@ div#footer { color: #021324; margin-top: 10px; background: #fff; padding: 20px; 
     float: left; text-decoration: none;
     color: #333;
     padding: 10.5px 11px;
-    background-color: #fff; 
+    background-color:rgba(230,230,255,0.6);
 	margin-right: 5px;
-	border-radius: 15px; -moz-border-radius: 15px; border:medium solid #333;
+	border-top-left-radius: 15px; border-top-right-radius: 15px; -moz-border-top-left-radius: 15px; -moz-border-top-right-radius: 15px;
 }
  
 .menu ul li a:visited{
     color: #333;
 	margin-right: 5px;
-	border-radius: 15px; -moz-border-radius: 15px; border:medium solid #333;
+	background-color:rgba(230,230,255,0.6);
+	border-top-left-radius: 15px; border-top-right-radius: 15px; -moz-border-top-left-radius: 15px; -moz-border-top-right-radius: 15px;
 }
  
 .menu ul li a:hover, .menu ul li .current{
     color: #fff;
 	margin-right: 5px;
     background-color:#0b75b2;
-	border-radius: 15px; -moz-border-radius: 15px; border:medium solid #333;
+	border-top-left-radius: 15px; border-top-right-radius: 15px; -moz-border-top-left-radius: 15px; -moz-border-top-right-radius: 15px;
 }
 
 

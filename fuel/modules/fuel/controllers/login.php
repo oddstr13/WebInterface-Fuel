@@ -96,7 +96,7 @@ class Login extends CI_Controller {
 						}
 						else
 						{
-							redirect($this->config->item('login_redirect', 'fuel'));
+							redirect('home');
 						}
 					}
 					else

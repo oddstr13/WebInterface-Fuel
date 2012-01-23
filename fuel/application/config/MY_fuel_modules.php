@@ -23,3 +23,4 @@ $config['modules']['projects'] = array(
 
 $config['modules']['items'] = array();
 $config['modules']['auctions'] = array();
+$config['modules']['enchantments'] = array();

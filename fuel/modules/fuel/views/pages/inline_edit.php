@@ -1,4 +1,5 @@
 <div>
+	<?php if ($this->fuel_auth->has_permission('inline')) { ?>
 	<?php if (!empty($description)) {?><p><?=$description?></p><?php } ?>
 	<?=$this->form->open(array('method' => 'post'))?>
 	<a name="inline_errors"></a>
@@ -16,4 +17,5 @@
 	</div>
 	<div class="clear"></div>
 	<?=$this->form->close()?>
+    <?php } ?>
 </div>

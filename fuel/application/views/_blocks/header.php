@@ -19,9 +19,10 @@
 	<?php echo js('jquery, main'); ?>
 	<?php echo js($js); ?>
 	
-	<?php if (!empty($is_blog)) : ?>
-	<?php echo $CI->fuel_blog->header()?>
-	<?php endif; ?>
+	<?php 
+		$CI->load->library('tank_auth');
+		$CI->lang->load('tank_auth'); 
+	?>
 	<base href="<?php echo site_url()?>" />
 	<style type="text/css" title="currentStyle">
 			@import "/fuel/modules/fuel/assets/css/table_jui.css";
@@ -39,17 +40,49 @@
     </script>
 	
 </head>
-
+<?php 
+	$MyUsername = $CI->session->userdata('username'); 
+	$MyData = $CI->users->get_user_by_username($MyUsername);
+?>
 
 <body class="<?php echo fuel_var('body_class', 'Body Class');?>">
 <div id="container">
 	<div id="container_inner">
+<div id="userInfoBox">
+        	<h2>User Info</h2>
+            <?php if(!$CI->tank_auth->is_logged_in()){ ?>
+    <p><a href="/login">[Login]</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="/register">[Register]</a></p>
+    <?php } else { ?>
+       	<table width="100%" border="0">
+  <tr>
+    <td rowspan="3"><img width="64px" src="http://minotar.net/avatar/<?php echo $MyData->username; ?>"/></td>
+    <td align="left">Minecraft IGN</td>
+    <td align="left"><?php echo $MyData->username; ?> </td>
+  </tr>
+  <tr>
+    <td align="left">Money</td>
+    <td align="left"><?php echo fuel_var('Currency Prefix'); ?><?php echo $MyData->money; ?></td>
+  </tr>
+  <tr>
+    <td align="left">Mail</td>
+    <td align="left">&nbsp;</td>
+  </tr>
+  <tr>
+    <td><a href="/auth/logout">[Logout]</a></td>
+    <td align="left">&nbsp;</td>
+    <td align="left">&nbsp;</td>
+  </tr>
+  </table>
+
+            
+    <?php } ?>
+  </div>
 		<div id="header">	
-			<h1>Web Auction</h1>
+			<h1><?php echo fuel_var('Site name'); ?></h1>
 		</div>
 		<div id="navigation" class="menu">
 			<?php echo fuel_nav(); ?>
 		</div>
-	
 		<div id="main">
+        	
 			
