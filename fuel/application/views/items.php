@@ -1,6 +1,7 @@
 <?php 
 	$CI->load->library('tank_auth');
-	$CI->lang->load('tank_auth'); 
+	$CI->lang->load('tank_auth');
+	if ($CI->tank_auth->is_logged_in()){
 	$MyUsername = $CI->session->userdata('username'); 
 	$MyData = $CI->users->get_user_by_username($MyUsername);
 ?>
@@ -15,12 +16,12 @@
 		<table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
 			<thead>
 				<tr>
-					<th>Item</th>
-					<th>Quantity</th>
-					<th>Market Price (Each)</th>
-					<th>Market Price (Total)</th>
-					<th>Mail it</th>
-				</tr>
+					<th align="center">Item</th>
+					<th align="center">Quantity</th>
+					<th align="center">Market Price (Each)</th>
+					<th align="center">Market Price (Total)</th>
+					<th align="center">Mail it</th>
+			  </tr>
 			</thead>
 			<tbody>
 <?php
@@ -29,25 +30,30 @@
 					$base = $CI->items_model->isTrueDamage($item->name);
 ?>
 					<tr>
-						<td>
-                        <img src="<?php echo $CI->items_model->get_item_image($item->name, $item->damage, $base); ?>"  />
+						<td align="center">
+                        <img src="<?php echo $CI->items_model->get_item_image($item->name, $item->damage, $base); ?>"  /><br/>
 						<?php 
-							echo $item->name;
+							echo $CI->items_model->getItemName($item->name, $item->damage);
 
 							foreach ($enchantments as $ench){
 								echo "<br/>";
-								echo $ench->name." ".$ench->level;	
+								echo $CI->items_model->getEnchName($ench->name)." - ".$CI->items_model->numberToRoman($ench->level);	
 							}
 						?>
                         </td>
-						<td><?php echo $item->quantity; ?></td>
-                        <td><?php echo fuel_var('Currency Prefix'); ?><?php echo "market price (each)"; ?></td>
-						<td><?php echo fuel_var('Currency Prefix'); ?><?php echo "market price (total)"; ?></td>
-						<td><?php echo "Mail it"; ?></td>
-					</tr>
+						<td align="center"><?php echo $item->quantity; ?></td>
+                        <td align="center"><?php echo "market price (each)"; ?></td>
+						<td align="center"><?php echo "market price (total)"; ?></td>
+						<td align="center"><?php echo "Mail it"; ?></td>
+			  </tr>
 <?php 
 				} 
 ?>
 			</tbody>
 		</table>
-	</div>
+</div>
+<?php
+	} else {
+		redirect('/login');	
+	}
+?>

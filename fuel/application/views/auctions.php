@@ -17,14 +17,14 @@
 		<table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
 			<thead>
 				<tr>
-					<th>Item</th>
-					<th>Seller</th>
-					<th>Expires</th>
-					<th>Quantity</th>
-					<th>Price (Each)</th>
-					<th>Price (Total)</th>
-					<th>% of Market Price</th>
-					<th>Cancel</th>
+					<th align="center">Item</th>
+					<th align="center">Seller</th>
+					<th align="center">Expires</th>
+					<th align="center">Quantity</th>
+					<th align="center">Price (Each)</th>
+					<th align="center">Price (Total)</th>
+					<th align="center">% of Market Price</th>
+					<th align="center">Cancel</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -34,23 +34,23 @@
 					$base = $CI->items_model->isTrueDamage($auction->name);
 ?>
 					<tr>
-						<td>
-                        <img src="<?php echo $CI->items_model->get_item_image($auction->item->name, $auction->item->damage, $base); ?>"  />
+						<td align="center">
+                        <img src="<?php echo $CI->items_model->get_item_image($auction->item->name, $auction->item->damage, $base); ?>"  /><br/>
 						<?php 
-							echo $auction->item->name; 
+							echo $CI->items_model->getItemName($auction->item->name, $auction->item->damage); 
 							foreach ($enchantments as $ench){
 								echo "<br/>";
-								echo $ench->name." ".$ench->level;	
+								echo $CI->items_model->getEnchName($ench->name)." - ".$CI->items_model->numberToRoman($ench->level);		
 							}
 						?>
                         </td>
-						<td><?php echo $auction->item->owner; ?></td>
-						<td><?php echo $auction->started; ?></td>
-						<td><?php echo $auction->quantity; ?></td>
-						<td><?php echo fuel_var('Currency Prefix'); ?><?php echo $auction->price; ?></td>
-						<td><?php echo fuel_var('Currency Prefix'); ?><?php echo ($auction->price * $auction->quantity); ?></td>
-						<td><?php echo "market price"; ?></td>
-						<td><?php echo "cancel"; ?></td>
+						<td align="center"><img width="32px" src="http://minotar.net/avatar/<?php echo $auction->item->owner; ?>" /><br/><?php echo $auction->item->owner; ?></td>
+						<td align="center"><?php echo $auction->started; ?></td>
+						<td align="center"><?php echo $auction->quantity; ?></td>
+						<td align="center"><?php echo $auction->price; ?></td>
+						<td align="center"><?php echo ($auction->price * $auction->quantity); ?></td>
+						<td align="center"><?php echo "market price"; ?></td>
+						<td align="center"><?php echo "cancel"; ?></td>
 					</tr>
 <?php 
 				} 

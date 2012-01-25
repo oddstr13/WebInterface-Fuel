@@ -24,6 +24,17 @@ class Auctions_model extends Base_module_model {
 		$query = $this->db->get_where('wa_auctions', array('wa_items.owner' => $player));
         return $query->result();
     }
+	function new_auction($item_id, $price, $quantity)
+	{
+		$data = array(
+   			'item_id' => $item_id ,
+   			'quantity' => $quantity ,
+			'started' => time() ,
+   			'price' => $price
+		);
+
+		$this->db->insert('wa_auctions', $data); 
+	}
 }
  
 class Auction_model extends Base_module_record {

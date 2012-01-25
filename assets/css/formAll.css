@@ -1,0 +1,42 @@
+  input {
+	border:medium solid #333;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size:18px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+select {
+	border:medium solid #333;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size:18px;
+	
+}
+button {
+	border:medium solid #333;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size:18px;
+	background-color: #FFF;
+	padding-left: 3px;
+	padding-right: 3px;
+}
+button:hover {
+	border:medium solid #333;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size:18px;
+	background-color: #64E0FF;
+	text-decoration: none;
+}
+label {
+	width: 200px;
+	text-align: left;
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size:18px;
+}

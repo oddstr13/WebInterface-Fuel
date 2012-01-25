@@ -69,8 +69,8 @@
   </tr>
   <tr>
     <td><a href="/auth/logout">[Logout]</a></td>
-    <td align="left">&nbsp;</td>
-    <td align="left">&nbsp;</td>
+    <td align="left"><a href="/change_email">[Change Email]</a></td>
+    <td align="left"><a href="/unregister">[Unregister]</a></td>
   </tr>
   </table>
 

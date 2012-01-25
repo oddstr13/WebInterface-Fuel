@@ -1,3 +1,6 @@
+<style type="text/css" title="currentStyle">
+			@import "/assets/css/formAll.css";
+</style>
 <?php
 $new_password = array(
 	'name'	=> 'new_password',

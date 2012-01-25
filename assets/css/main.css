@@ -8,7 +8,7 @@ RESET BROWSER VALUES SO EVERYONE IS THE SAME
 /***************************************************************
 TAG STYLES
 ***************************************************************/
-body { background: url(../images/wa_bg2.jpg) no-repeat top center; background-color:#FFFFFF; font-family: Arial, 'Lucida Grande', sans-serif; color: #021324; }
+body { background: url(../images/wa_bg2.jpg) no-repeat top center; min-width: 960px; background-color:#FFFFFF; font-family: Arial, 'Lucida Grande', sans-serif; color: #021324; }
 h1 { font-size: 40px; }
 h2 { font-size: 24px; color: #021324; margin-bottom: 15px; }
 h3 { font-size: 16px; color: #021324; margin-bottom: 5px; font-weight: normal; }
@@ -39,10 +39,12 @@ SPECIFIC AREAS
 ***************************************************************/
 div#error_404 { margin: -100px 0 0 340px; }
 div#container { }
-div#container_inner { position: relative; width: auto;}
+div#container_inner { position: relative; width: auto; min-width: 960px;}
 div#header { text-align: center; padding: 20px; width: 500px; margin:auto; background: #fff; position: relative; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; -moz-border-bottom-left-radius: 15px; -moz-border-bottom-right-radius: 15px; background-color:rgba(230,230,255,0.4); }
 
 div#navigation { text-align: center; margin-top: 259px; margin-left: 20px; height: 35px; padding: 0px; font-size:18px; }
+
+div#newAuction { width: 500px; margin:auto; padding: 20px;}
 
 div#userInfoBox { float:right; width: 400px; text-align: center; margin-top: 80px; padding: 10px; font-size:18px; border-bottom-left-radius: 15px; border-top-left-radius: 15px; -moz-border-bottom-left-radius: 15px; -moz-border-top-left-radius: 15px; background-color:rgba(230,230,255,0.6);}
 
@@ -94,4 +96,45 @@ div#footer { color: #021324; margin-top: 10px; background: #fff; padding: 20px; 
 	border-top-left-radius: 15px; border-top-right-radius: 15px; -moz-border-top-left-radius: 15px; -moz-border-top-right-radius: 15px;
 }
 
-
+.input {
+	border:medium solid #333;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size:18px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+.select {
+	border:medium solid #333;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size:18px;
+	
+}
+.button {
+	border:medium solid #333;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size:18px;
+	background-color: #FFF;
+	padding-left: 3px;
+	padding-right: 3px;
+}
+.button:hover {
+	border:medium solid #333;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size:18px;
+	background-color: #64E0FF;
+	text-decoration: none;
+}
+label {
+	width: 200px;
+	text-align: left;
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size:18px;
+}
