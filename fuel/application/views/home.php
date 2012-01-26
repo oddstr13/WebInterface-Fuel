@@ -1,1 +1,1 @@
-<h2>Hi! Welcome to Web Auction<h2>
+<h2 align="center">Hi! Welcome to Web Auction<h2>

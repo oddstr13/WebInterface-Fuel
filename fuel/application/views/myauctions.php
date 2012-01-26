@@ -8,9 +8,10 @@
 <?php 
 	$CI->load->model('auctions_model');
 	$CI->load->model('items_model');
+	$CI->load->model('player_items_model');
 	$CI->load->model('enchantments_model');
 	
-	$items = $CI->items_model->get_player_items($MyData->username);
+	$items = $CI->player_items_model->get_player_items($MyData->username);
     $auctions = $CI->auctions_model->get_player_auctions($MyData->username);
 ?>
 <div id="newAuction">
@@ -21,7 +22,7 @@
 				<td width="50%" height="53"><label>Item</label></td><td width="50%"><select name="Item" class="select">
 <?php
 				foreach ($items as $item) {
-					$enchantments = $CI->enchantments_model->get_item_enchantments($item->id);
+					$enchantments = $CI->enchantments_model->get_item_enchantments($item->item_id);
 					$base = $CI->items_model->isTrueDamage($item->name);
 ?>
 					<option value="<?php echo $item->id ?>">
@@ -53,7 +54,6 @@
 			<thead>
 				<tr>
 					<th align="center">Item</th>
-					<th align="center">Seller</th>
 					<th align="center">Expires</th>
 					<th align="center">Quantity</th>
 					<th align="center">Price (Each)</th>
@@ -79,7 +79,6 @@
 							}
 						?>
                         </td>
-						<td align="center"><?php echo $auction->seller; ?></td>
 						<td align="center"><?php echo $auction->started; ?></td>
 						<td align="center"><?php echo $auction->quantity; ?></td>
 						<td align="center"><?php echo $auction->price; ?></td>

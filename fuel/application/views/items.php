@@ -7,11 +7,15 @@
 ?>
 <?php 
 	$CI->load->model('items_model');
+	$CI->load->model('player_items_model');
 	$CI->load->model('enchantments_model');
 	
-    $items = $CI->items_model->get_player_items($MyData->username);
+    $items = $CI->player_items_model->get_player_items($MyData->username);
+	//echo "<pre>";
+	//print_r($items);
+	//echo "</pre>";
 ?>
-	<h2>My Items</h2>
+	<h2 align="center">My Items</h2>
 	<div class="demo_jui">
 		<table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
 			<thead>
@@ -26,7 +30,7 @@
 			<tbody>
 <?php
 				foreach ($items as $item) {
-					$enchantments = $CI->enchantments_model->get_item_enchantments($item->id);
+					$enchantments = $CI->enchantments_model->get_item_enchantments($item->item_id);
 					$base = $CI->items_model->isTrueDamage($item->name);
 ?>
 					<tr>

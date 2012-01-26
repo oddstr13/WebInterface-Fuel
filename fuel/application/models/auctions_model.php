@@ -13,23 +13,39 @@ class Auctions_model extends Base_module_model {
 	function list_items($limit = NULL, $offset = NULL, $col = 'id', $order = 'asc')
     {
         $this->db->join('wa_items', 'wa_items.id = wa_auctions.item_id', 'left');
-        $this->db->select('wa_auctions.id, wa_auctions.item_id, wa_items.owner AS seller, wa_auctions.price, wa_items.name AS name, wa_items.damage AS damage, wa_auctions.quantity, wa_auctions.started', FALSE);
+        $this->db->select('wa_auctions.id, wa_auctions.item_id, wa_auctions.seller, wa_auctions.price, wa_items.name AS name, wa_items.damage AS damage, wa_auctions.quantity, wa_auctions.started', FALSE);
         $data = parent::list_items($limit, $offset, $col, $order);
         return $data;
     }
 	function get_player_auctions($player)
     {
 		$this->db->join('wa_items', 'wa_items.id = wa_auctions.item_id', 'left');
-		$this->db->select('wa_auctions.id, wa_auctions.item_id, wa_items.owner AS seller, wa_auctions.price, wa_items.name AS name, wa_items.damage AS damage, wa_auctions.quantity, wa_auctions.started', FALSE);
-		$query = $this->db->get_where('wa_auctions', array('wa_items.owner' => $player));
+		$this->db->select('wa_auctions.id, wa_auctions.item_id, wa_auctions.seller, wa_auctions.price, wa_items.name AS name, wa_items.damage AS damage, wa_auctions.quantity, wa_auctions.started', FALSE);
+		$query = $this->db->get_where('wa_auctions', array('wa_auctions.seller' => $player));
         return $query->result();
     }
-	function new_auction($item_id, $price, $quantity)
+	function set_quantity($id, $amount)
+	{
+		$this->db->update('wa_auctions', array('quantity' => $amount), array('id' => $id));	
+	}
+	function get_auction($auction_id)
+	{
+		$this->db->join('wa_items', 'wa_items.id = wa_auctions.item_id', 'left');
+		$this->db->select('wa_auctions.id, wa_auctions.item_id, wa_auctions.seller, wa_auctions.price, wa_items.name AS name, wa_items.damage AS damage, wa_auctions.quantity, wa_auctions.started', FALSE);
+		$query = $this->db->get_where('wa_auctions', array('wa_auctions.id' => $auction_id));
+		return $query->result();
+	}
+	function delete_auction($id)
+	{
+		$this->db->delete('wa_auctions', array('id' => $id)); 	
+	}
+	function new_auction($item_id, $price, $quantity, $seller)
 	{
 		$data = array(
    			'item_id' => $item_id ,
    			'quantity' => $quantity ,
 			'started' => time() ,
+			'seller' => $seller ,
    			'price' => $price
 		);
 

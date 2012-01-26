@@ -10,7 +10,7 @@
     $players = $CI->players_model->find_active();
 ?>
 
-	<h2>Players</h2>
+	<h2 align="center">Players</h2>
 	<div class="demo_jui">
 		<table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
 			<thead>

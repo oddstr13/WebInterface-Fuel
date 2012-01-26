@@ -8,23 +8,14 @@ class Items_model extends Base_module_model {
     }
 	function list_items($limit = NULL, $offset = NULL, $col = 'id', $order = 'asc')
     {
-        $this->db->select('wa_items.id, wa_items.name, wa_items.damage, wa_items.owner, wa_items.quantity', FALSE);
+        $this->db->select('wa_items.id, wa_items.name, wa_items.damage', FALSE);
         $data = parent::list_items($limit, $offset, $col, $order);
         return $data;
-    }
-	function get_player_items($player)
-    {
-		$query = $this->db->get_where('wa_items', array('owner' => $player, 'quantity >' => 0));
-        return $query->result();
     }
 	function get_item($item_id)
 	{
 		$query = $this->db->get_where('wa_items', array('id' => $item_id));
 		return $query->result();
-	}
-	function set_quant($item_id, $new_quant)
-	{
-		$this->db->update('wa_items', array('quantity' => $new_quant), array('id' => $item_id));
 	}
 	function isTrueDamage ($itemId)
 	{

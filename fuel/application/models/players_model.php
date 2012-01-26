@@ -15,4 +15,8 @@ class Players_model extends Base_module_model {
         $query = $this->db->get('wa_users');
         return $query->result();
 	}
+	function set_money($name, $amount)
+	{
+		$this->db->update('wa_users', array('money' => $amount), array('username' => $name));	
+	}
 }

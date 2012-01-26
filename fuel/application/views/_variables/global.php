@@ -6,7 +6,7 @@ $CI =& get_instance();
 // generic global page variables used for all pages
 $vars = array();
 $vars['layout'] = 'main';
-$vars['page_title'] = fuel_nav(array('render_type' => 'page_title', 'delimiter' => ' : ', 'order' => 'desc', 'home_link' => 'My Website'));
+$vars['page_title'] = fuel_nav(array('render_type' => 'page_title', 'delimiter' => ' : ', 'order' => 'desc', 'home_link' => 'Web Auction'));
 $vars['meta_keywords'] = '';
 $vars['meta_description'] = '';
 $vars['js'] = array();
