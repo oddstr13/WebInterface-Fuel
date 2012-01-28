@@ -44,7 +44,7 @@ div#header { text-align: center; padding: 20px; width: 500px; margin:auto; backg
 
 div#navigation { text-align: center; margin-top: 259px; margin-left: 20px; height: 35px; padding: 0px; font-size:18px; }
 
-div#newAuction { width: 500px; margin:auto; padding: 20px;}
+div#newAuction { width: 600px; margin:auto; padding: 20px;}
 
 div#userInfoBox { float:right; width: 400px; text-align: center; margin-top: 80px; padding: 10px; font-size:18px; border-bottom-left-radius: 15px; border-top-left-radius: 15px; -moz-border-bottom-left-radius: 15px; -moz-border-top-left-radius: 15px; background-color:rgba(230,230,255,0.6);}
 

@@ -19,4 +19,12 @@ class Players_model extends Base_module_model {
 	{
 		$this->db->update('wa_users', array('money' => $amount), array('username' => $name));	
 	}
+	function set_sales($name, $sold, $earnt)
+	{
+		$this->db->update('wa_users', array('sold' => $sold, 'earnt' => $earnt), array('username' => $name));	
+	}
+	function set_purchases($name, $bought, $spent)
+	{
+		$this->db->update('wa_users', array('bought' => $bought, 'spent' => $spent), array('username' => $name));	
+	}
 }

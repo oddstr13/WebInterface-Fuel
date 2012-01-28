@@ -4,10 +4,19 @@
 	if ($CI->tank_auth->is_logged_in()){
 	$MyUsername = $CI->session->userdata('username'); 
 	$MyData = $CI->users->get_user_by_username($MyUsername);
+	if (isset($CI->session->userdata['error_msg']))
+	{
+		$error = $CI->session->userdata['error_msg'];
+	}
+	if (isset($CI->session->userdata['other_msg']))
+	{
+		$msg = $CI->session->userdata['other_msg'];
+	}
 ?>
 <?php 
 	$CI->load->model('auctions_model');
 	$CI->load->model('items_model');
+	$CI->load->model('market_model');
 	$CI->load->model('player_items_model');
 	$CI->load->model('enchantments_model');
 	
@@ -15,7 +24,24 @@
     $auctions = $CI->auctions_model->get_player_auctions($MyData->username);
 ?>
 <div id="newAuction">
+
     	<h2 align="center">New Auction</h2>
+        <?php 
+			if (isset($error))
+			{
+				?><p style="color:red" align="center"><?php
+				echo $error;
+				$CI->session->unset_error();
+				?></p><?php
+			}
+			if (isset($msg))
+			{
+				?><p style="color:green" align="center"><?php
+				echo $msg;
+				$CI->session->unset_msg();
+				?></p><?php
+			}
+    	?>
     	<form action="trade/new_auction" method="post" name="auction">
 			<table width="100%" cellpadding="5" style="text-align:left;">
 			<tr>
@@ -24,11 +50,18 @@
 				foreach ($items as $item) {
 					$enchantments = $CI->enchantments_model->get_item_enchantments($item->item_id);
 					$base = $CI->items_model->isTrueDamage($item->name);
+					$market = $CI->market_model->get_market_price($item->item_id);
+					if (empty($market)){
+						$mark = 0;
+					}else{
+						$mark = $market[0]->price;	
+					}
 ?>
 					<option value="<?php echo $item->id ?>">
 <?php 
 					echo $CI->items_model->getItemName($item->name, $item->damage); 
-					echo "(x".$item->quantity.")";
+					echo " (x".$item->quantity.")";
+					echo " (".fuel_var('Currency Prefix').$mark.")";
                     foreach ($enchantments as $ench)
 					{
 						echo " (".$CI->items_model->getEnchName($ench->name)." - ".$CI->items_model->numberToRoman($ench->level).")";	
@@ -67,6 +100,12 @@
 				foreach ($auctions as $auction) {
 					$enchantments = $CI->enchantments_model->get_item_enchantments($auction->item_id);
 					$base = $CI->items_model->isTrueDamage($auction->name);
+					$market = $CI->market_model->get_market_price($auction->item_id);
+					if (empty($market)){
+						$mark = 0;
+					}else{
+						$mark = $market[0]->price;	
+					}
 ?>
 					<tr>
 						<td align="center">
@@ -79,11 +118,11 @@
 							}
 						?>
                         </td>
-						<td align="center"><?php echo $auction->started; ?></td>
+						<td align="center"><?php echo date('j/m/Y H:i:s', $auction->started + (10 * 86400)); ?></td>
 						<td align="center"><?php echo $auction->quantity; ?></td>
 						<td align="center"><?php echo $auction->price; ?></td>
 						<td align="center"><?php echo ($auction->price * $auction->quantity); ?></td>
-						<td align="center"><?php echo "market price"; ?></td>
+						<td align="center"><?php if ($mark > 0){echo round(($auction->price/$mark)*100, 2);}else{echo 0;} ?></td>
 						<td align="center"><?php echo "cancel"; ?></td>
 			  </tr>
 <?php 

@@ -468,6 +468,28 @@ class CI_Session {
 
 		$this->sess_write();
 	}
+	
+	function set_error($error)
+	{		
+		$this->userdata['error_msg'] = $error;	
+		$this->sess_write();
+	}
+	function unset_error()
+	{
+		unset($this->userdata['error_msg']);
+		$this->sess_write();
+	}
+	
+	function set_msg($error)
+	{		
+		$this->userdata['other_msg'] = $error;	
+		$this->sess_write();
+	}
+	function unset_msg()
+	{
+		unset($this->userdata['other_msg']);
+		$this->sess_write();
+	}
 
 	// --------------------------------------------------------------------
 

@@ -46,6 +46,10 @@ class Player_items_model extends Base_module_model {
 	{
 		$this->db->update('wa_player_items', array('quantity' => $amount), array('id' => $id));	
 	}
+	function delete_item($id)
+	{
+		$this->db->delete('wa_player_items', array('id' => $id)); 	
+	}
 	function new_player_item($item_id, $player, $quantity)
 	{
 		$data = array(

@@ -7,6 +7,7 @@
 ?>
 <?php 
 	$CI->load->model('items_model');
+	$CI->load->model('market_model');
 	$CI->load->model('player_items_model');
 	$CI->load->model('enchantments_model');
 	
@@ -32,6 +33,12 @@
 				foreach ($items as $item) {
 					$enchantments = $CI->enchantments_model->get_item_enchantments($item->item_id);
 					$base = $CI->items_model->isTrueDamage($item->name);
+					$market = $CI->market_model->get_market_price($item->item_id);
+					if (empty($market)){
+						$mark = 0;
+					}else{
+						$mark = $market[0]->price;	
+					}
 ?>
 					<tr>
 						<td align="center">
@@ -46,8 +53,8 @@
 						?>
                         </td>
 						<td align="center"><?php echo $item->quantity; ?></td>
-                        <td align="center"><?php echo "market price (each)"; ?></td>
-						<td align="center"><?php echo "market price (total)"; ?></td>
+                        <td align="center"><?php echo round($mark, 2); ?></td>
+						<td align="center"><?php echo round($mark, 2); ?></td>
 						<td align="center"><?php echo "Mail it"; ?></td>
 			  </tr>
 <?php 
