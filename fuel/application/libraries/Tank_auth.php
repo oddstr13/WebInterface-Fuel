@@ -69,9 +69,14 @@ class Tank_auth
 
 					} else {
 						$this->ci->session->set_userdata(array(
-								'user_id'	=> $user->id,
-								'username'	=> $user->username,
-								'status'	=> ($user->activated == 1) ? STATUS_ACTIVATED : STATUS_NOT_ACTIVATED,
+								'user_id'			=> $user->id,
+								'username'			=> $user->username,
+								'can_buy_auction'	=> $user->can_buy_auction,
+								'can_sell_auction'	=> $user->can_sell_auction,
+								'can_buy_static'	=> $user->can_buy_auction,
+								'can_sell_static'	=> $user->can_sell_static,
+								'is_admin'			=> $user->is_admin,
+								'status'			=> ($user->activated == 1) ? STATUS_ACTIVATED : STATUS_NOT_ACTIVATED,
 						));
 
 						if ($user->activated == 0) {							// fail - not activated

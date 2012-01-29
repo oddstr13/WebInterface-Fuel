@@ -52,8 +52,11 @@
 					<th align="center">Price (Each)</th>
 					<th align="center">Price (Total)</th>
 					<th align="center">% of Market Price</th>
+                    <?php if ($this->session->userdata('can_buy_auction') == 1){ ?>
                     <th align="center">Buy</th>
+                    <?php } if ($this->session->userdata('is_admin') == 1){?>
 					<th align="center">Cancel</th>
+                    <?php } ?>
 				</tr>
 			</thead>
 			<tbody>
@@ -87,8 +90,11 @@
 							<td align="center"><?php echo $auction->price; ?></td>
 							<td align="center"><?php echo ($auction->price * $auction->quantity); ?></td>
 							<td align="center"><?php if ($mark > 0){echo round(($auction->price/$mark)*100, 2);}else{echo 0;} ?></td>
+                            <?php if ($this->session->userdata('can_buy_auction') == 1){ ?>
                  	       <td align="center"><form action='trade/buy_item' method='post'><input type='text' size="6" name='Quantity' onKeyPress='return numbersonly(this, event)' class='input'><input type='hidden' name='ID' value='<?php echo $auction->id; ?>' /><input type='submit' value='Buy' class='button' /></form></td>
+                           <?php } if ($this->session->userdata('is_admin') == 1){ ?>
 							<td align="center"><?php echo "cancel"; ?></td>
+                            <?php } ?>
 						</tr>
 <?php 
 					}else{

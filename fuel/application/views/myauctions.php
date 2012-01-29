@@ -23,9 +23,9 @@
 	$items = $CI->player_items_model->get_player_items($MyData->username);
     $auctions = $CI->auctions_model->get_player_auctions($MyData->username);
 ?>
-<div id="newAuction">
 
-    	<h2 align="center">New Auction</h2>
+
+    	
         <?php 
 			if (isset($error))
 			{
@@ -41,7 +41,11 @@
 				$CI->session->unset_msg();
 				?></p><?php
 			}
+			if ($this->session->userdata('can_sell_auction') == 1){
     	?>
+        <div id="newAuction">
+        <h2 align="center">New Auction</h2>
+
     	<form action="trade/new_auction" method="post" name="auction">
 			<table width="100%" cellpadding="5" style="text-align:left;">
 			<tr>
@@ -81,6 +85,7 @@
   </form>
     </div>
 	<h2 align="center">&nbsp;</h2>
+    <?php } ?>
 	<h2 align="center">My Auctions</h2>
 	<div class="demo_jui">
 		<table cellpadding="0" cellspacing="0" border="0" class="display" id="example">

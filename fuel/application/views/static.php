@@ -20,6 +20,7 @@
 	$CI->load->model('enchantments_model');
 
     $auctions = $CI->static_model->list_items();
+	$items = $CI->items_model->list_items();
 ?>
 
 	<h2 align="center">Static Prices</h2>
@@ -39,8 +40,13 @@
 				$CI->session->unset_msg();
 				?></p><?php
 			}
+			if ($CI->session->userdata('is_admin') == 1){
+				?>
+                	<h3 align="center"><a href="/static_edit">Edit Static Prices</a></h3><br/>
+                <?php	
+			}
+			
     	?>
-    
 	<div class="demo_jui">
 		<table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
 			<thead>
@@ -72,6 +78,7 @@
 						}else{
 							$mark = $market[0]->price;	
 						}
+						if (($auction['buy'] != "")||($auction['sell'] != "")){; 
 ?>
 						<tr>
 							<td align="center">
@@ -87,15 +94,15 @@
                         	</td>
 							<td align="center"><?php echo $mark; ?></td>
                             <td align="center"><?php echo $my_quant; ?></td>
-                            <td align="center"><?php echo $auction['buy']; ?></td>
-                 	       <td align="center"><form action='trade/buy_static' method='post'><input type='text' size="6" name='Quantity' onKeyPress='return numbersonly(this, event)' class='input'><input type='hidden' name='ID' value='<?php echo $auction['id']; ?>' /><input type='submit' value='Buy' class='button' /></form></td>
-                           <td align="center"><?php echo $auction['sell']; ?></td>
-                           <td align="center"><form action='trade/sell_static' method='post'><input type='text' size="6" name='Quantity' onKeyPress='return numbersonly(this, event)' class='input'><input type='hidden' name='ID' value='<?php echo $auction['id']; ?>' /><input type='submit' value='Sell' class='button' /></form></td>
+                            <td align="center"><?php if (isset($auction['buy'])) {echo $auction['buy'];}else{echo "N/A";} ?></td>
+                 	       <td align="center"><?php if (!isset($auction['buy'])) {echo "N/A";}else{ ?><form action='trade/buy_static' method='post'><input type='text' size="6" name='Quantity' onKeyPress='return numbersonly(this, event)' class='input'><input type='hidden' name='ID' value='<?php echo $auction['id']; ?>' /><input type='submit' value='Buy' class='button' /></form><?php } ?></td>
+                           <td align="center"><?php if (isset($auction['sell'])) {echo $auction['sell'];}else{echo "N/A";} ?></td>
+                           <td align="center"><?php if (!isset($auction['sell'])) {echo "N/A";}else{?><form action='trade/sell_static' method='post'><input type='text' size="6" name='Quantity' onKeyPress='return numbersonly(this, event)' class='input'><input type='hidden' name='ID' value='<?php echo $auction['id']; ?>' /><input type='submit' value='Sell' class='button' /></form><?php } ?></td>
 							<td align="center"><?php echo "cancel"; ?></td>
 						</tr>
 <?php 
 						
-				}
+				}}
 ?>
 			</tbody>
 		</table>
