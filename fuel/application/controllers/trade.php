@@ -17,6 +17,7 @@ class Trade extends CI_Controller
 		$this->load->model('static_model');
 		$this->load->model('players_model');
 		$this->load->model('market_model');
+		$this->load->model('mail_model');
 		$this->load->model('enchantments_model');
 		$this->load->model('player_items_model');
 		
@@ -25,6 +26,28 @@ class Trade extends CI_Controller
 	function index()
 	{
 		redirect('/');
+	}
+	function mail_item()
+	{
+		if ($this->tank_auth->is_logged_in()){ 
+			$username = $this->session->userdata('username');
+			$user_data = $this->users->get_user_by_username($username);	
+			$item_id = $this->input->post('ID');
+			
+			$item_info = $this->player_items_model->get_item($item_id);
+			if ($item_info[0]->player == $username){
+				$this->mail_model->new_mail($item_info[0]->item_id, $user_data->id, $item_info[0]->quantity);
+				$this->player_items_model->delete_item($item_info[0]->id);
+				$this->session->set_msg("Success! Items send to in-game mail box.");
+				redirect('/items');
+			}else{
+				$this->session->set_error("That is not your item, so I will not mail it to you.");	
+				redirect('/items');	
+			}
+		}else{
+			$this->session->set_error("Please log in before trying to do that.");	
+			redirect('/login');	
+		}
 	}
 	function buy_static()
 	{
@@ -50,6 +73,20 @@ class Trade extends CI_Controller
 								}
 								$this->players_model->set_money($username, $user_data->money - ($static_info[0]->buy * $quant));	
 								$this->players_model->set_purchases($username, $user_data->bought + $quant, $user_data->spent + ($static_info[0]->buy * $quant));
+								
+								$market_price = $this->market_model->get_market_price($static_info[0]->item_id);
+								if (empty($market_price))
+								{
+									$this->market_model->new_market_price($static_info[0]->item_id, $quant, $static_info[0]->buy);
+								}else{
+									$current_count = $market_price[0]->quantity;
+									$current_price = $market_price[0]->price;
+									$total = $current_count * $current_price + ($quant *  $static_info[0]->price);
+									$new_market_price = $total / ($current_count + $quant);
+									$this->market_model->set_price($market_price[0]->id, $current_count + $quant, $new_market_price);
+								}
+								
+								
 								$this->session->set_msg("Success! Items bought.");
 								redirect('/static');	
 							}else{
@@ -104,6 +141,19 @@ class Trade extends CI_Controller
 									}else{
 										$this->player_items_model->delete_item($player_item[0]->id);	
 									}
+									
+									$market_price = $this->market_model->get_market_price($static_info[0]->item_id);
+									if (empty($market_price))
+									{
+										$this->market_model->new_market_price($static_info[0]->item_id, $quant, $static_info[0]->sell);
+									}else{
+										$current_count = $market_price[0]->quantity;
+										$current_price = $market_price[0]->price;
+										$total = $current_count * $current_price + ($quant *  $static_info[0]->sell);
+										$new_market_price = $total / ($current_count + $quant);
+										$this->market_model->set_price($market_price[0]->id, $current_count + $quant, $new_market_price);
+									}
+									
 									$this->session->set_msg("Success! Items sold.");
 									redirect('/static');	
 								}else{

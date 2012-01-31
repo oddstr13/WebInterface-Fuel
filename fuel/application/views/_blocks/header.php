@@ -18,6 +18,7 @@
 	<?php 
 		$CI->load->library('tank_auth');
 		$CI->lang->load('tank_auth'); 
+		$CI->load->model('mail_model');
 	?>
 	<base href="<?php echo site_url()?>" />
 	<style type="text/css" title="currentStyle">
@@ -61,7 +62,10 @@
   </tr>
   <tr>
     <td align="left">Mail</td>
-    <td align="left">&nbsp;</td>
+    <td align="left"><?php 
+		$player_mail = $CI->mail_model->get_player_mail($MyData->id);
+		echo count($player_mail);	
+	?></td>
   </tr>
   <tr>
     <td><a href="/auth/logout">[Logout]</a></td>

@@ -58,7 +58,6 @@
 					<th align="center">Buy</th>
                     <th align="center">Sell Price (Each)</th>
                     <th align="center">Sell</th>
-					<th align="center">Cancel</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -98,7 +97,6 @@
                  	       <td align="center"><?php if (!isset($auction['buy'])) {echo "N/A";}else{ ?><form action='trade/buy_static' method='post'><input type='text' size="6" name='Quantity' onKeyPress='return numbersonly(this, event)' class='input'><input type='hidden' name='ID' value='<?php echo $auction['id']; ?>' /><input type='submit' value='Buy' class='button' /></form><?php } ?></td>
                            <td align="center"><?php if (isset($auction['sell'])) {echo $auction['sell'];}else{echo "N/A";} ?></td>
                            <td align="center"><?php if (!isset($auction['sell'])) {echo "N/A";}else{?><form action='trade/sell_static' method='post'><input type='text' size="6" name='Quantity' onKeyPress='return numbersonly(this, event)' class='input'><input type='hidden' name='ID' value='<?php echo $auction['id']; ?>' /><input type='submit' value='Sell' class='button' /></form><?php } ?></td>
-							<td align="center"><?php echo "cancel"; ?></td>
 						</tr>
 <?php 
 						

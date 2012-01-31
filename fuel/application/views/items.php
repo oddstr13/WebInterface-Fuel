@@ -55,7 +55,7 @@
 						<td align="center"><?php echo $item->quantity; ?></td>
                         <td align="center"><?php echo round($mark, 2); ?></td>
 						<td align="center"><?php echo round($mark, 2); ?></td>
-						<td align="center"><?php echo "Mail it"; ?></td>
+						<td align="center"><form action='trade/mail_item' method='post'><input type='hidden' name='ID' value='<?php echo $item->id; ?>' /><input type='submit' value='Send back to game' class='button' /></form></td>
 			  </tr>
 <?php 
 				} 
