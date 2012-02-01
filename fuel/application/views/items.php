@@ -11,7 +11,7 @@
 	$CI->load->model('player_items_model');
 	$CI->load->model('enchantments_model');
 	
-    $items = $CI->player_items_model->get_player_items($MyData->username);
+    $items = $CI->player_items_model->get_player_items($MyData->id);
 	//echo "<pre>";
 	//print_r($items);
 	//echo "</pre>";

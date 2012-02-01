@@ -35,7 +35,7 @@ class Trade extends CI_Controller
 			$item_id = $this->input->post('ID');
 			
 			$item_info = $this->player_items_model->get_item($item_id);
-			if ($item_info[0]->player == $username){
+			if ($item_info[0]->player == $user_data->id){
 				$this->mail_model->new_mail($item_info[0]->item_id, $user_data->id, $item_info[0]->quantity);
 				$this->player_items_model->delete_item($item_info[0]->id);
 				$this->session->set_msg("Success! Items send to in-game mail box.");
@@ -64,15 +64,15 @@ class Trade extends CI_Controller
 					if ($quant > 0){
 						if (is_numeric($quant)){
 							if ($user_data->money >= ($static_info[0]->buy * $quant)){
-								$player_item = $this->player_items_model->get_item_match($static_info[0]->item_id, $username);
+								$player_item = $this->player_items_model->get_item_match($static_info[0]->item_id, $user_data->id);
 								if (empty($player_item))
 								{
-									$this->player_items_model->new_player_item($static_info[0]->item_id, $username, $quant);	
+									$this->player_items_model->new_player_item($static_info[0]->item_id, $user_data->id, $quant);	
 								}else{
 									$this->player_items_model->set_quantity($player_item[0]->id, $player_item[0]->quantity + $quant);
 								}
-								$this->players_model->set_money($username, $user_data->money - ($static_info[0]->buy * $quant));	
-								$this->players_model->set_purchases($username, $user_data->bought + $quant, $user_data->spent + ($static_info[0]->buy * $quant));
+								$this->players_model->set_money($user_data->id, $user_data->money - ($static_info[0]->buy * $quant));	
+								$this->players_model->set_purchases($user_data->id, $user_data->bought + $quant, $user_data->spent + ($static_info[0]->buy * $quant));
 								
 								$market_price = $this->market_model->get_market_price($static_info[0]->item_id);
 								if (empty($market_price))
@@ -128,13 +128,13 @@ class Trade extends CI_Controller
 				if (isset($static_info[0]->sell)){
 					if ($quant > 0){
 						if (is_numeric($quant)){
-							$player_item = $this->player_items_model->get_item_match($static_info[0]->item_id, $username);
+							$player_item = $this->player_items_model->get_item_match($static_info[0]->item_id, $user_data->id);
 							if (!empty($player_item))
 							{
 								if ($player_item[0]->quantity >= $quant)
 								{
-									$this->players_model->set_money($username, $user_data->money + ($static_info[0]->sell * $quant));	
-									$this->players_model->set_sales($username, $user_data->sold + $quant, $user_data->earnt + ($static_info[0]->sell * $quant));
+									$this->players_model->set_money($user_data->id, $user_data->money + ($static_info[0]->sell * $quant));	
+									$this->players_model->set_sales($user_data->id, $user_data->sold + $quant, $user_data->earnt + ($static_info[0]->sell * $quant));
 									$newQuant = $player_item[0]->quantity - $quant;
 									if ($newQuant > 0){
 										$this->player_items_model->set_quantity($player_item[0]->id, $player_item[0]->quantity - $quant);
@@ -196,17 +196,17 @@ class Trade extends CI_Controller
 		
 			
 			$auction_info = $this->auctions_model->get_auction($auction_id);
-			$seller_data = $this->users->get_user_by_username($auction_info[0]->seller);
+			$seller_data = $this->users->get_user_by_id($auction_info[0]->seller);
 			if ($buy_auction == 1){
 				if ($quant > 0){
 					if (is_numeric($quant)){
 						if ($quant <= $auction_info[0]->quantity){
 							if ($user_data->money >= ($auction_info[0]->price * $quant)){
-								if ($username != $auction_info[0]->seller){
-									$player_item = $this->player_items_model->get_item_match($auction_info[0]->item_id, $username);
+								if ($user_data->id != $auction_info[0]->seller){
+									$player_item = $this->player_items_model->get_item_match($auction_info[0]->item_id, $user_data->id);
 									if (empty($player_item))
 									{
-										$this->player_items_model->new_player_item($auction_info[0]->item_id, $username, $quant);	
+										$this->player_items_model->new_player_item($auction_info[0]->item_id, $user_data->id, $quant);	
 									}else{
 										$this->player_items_model->set_quantity($player_item[0]->id, $player_item[0]->quantity + $quant);
 									}
@@ -216,11 +216,11 @@ class Trade extends CI_Controller
 									}else{
 										$this->auctions_model->set_quantity($auction_info[0]->id, $auction_info[0]->quantity - $quant);
 									}
-									$this->players_model->set_money($username, $user_data->money - ($auction_info[0]->price * $quant));
-									$this->players_model->set_money($seller_data->username, $seller_data->money + ($auction_info[0]->price * $quant));
+									$this->players_model->set_money($user_data->id, $user_data->money - ($auction_info[0]->price * $quant));
+									$this->players_model->set_money($seller_data->id, $seller_data->money + ($auction_info[0]->price * $quant));
 								
-									$this->players_model->set_purchases($username, $user_data->bought + $quant, $user_data->spent + ($auction_info[0]->price * $quant));
-									$this->players_model->set_sales($seller_data->username, $seller_data->sold + $quant, $seller_data->earnt + ($auction_info[0]->price * $quant));
+									$this->players_model->set_purchases($user_data->id, $user_data->bought + $quant, $user_data->spent + ($auction_info[0]->price * $quant));
+									$this->players_model->set_sales($seller_data->id, $seller_data->sold + $quant, $seller_data->earnt + ($auction_info[0]->price * $quant));
 								
 									$market_price = $this->market_model->get_market_price($auction_info[0]->item_id);
 									if (empty($market_price))
@@ -327,7 +327,7 @@ class Trade extends CI_Controller
 			if ($is_admin == 1){
 				if ($price > 0){
 					if ($quant > 0){
-						if ($item_info[0]->player == $username){
+						if ($item_info[0]->player == $user_data->id){
 							if ($item_info[0]->quantity >= $quant){
 								if (is_numeric($price)){
 									if (is_numeric($quant)){
@@ -388,12 +388,12 @@ class Trade extends CI_Controller
 			if ($sell_auction == 1){
 				if ($price > 0){
 					if ($quant > 0){
-						if ($item_info[0]->player == $username){
+						if ($item_info[0]->player == $user_data->username){
 							if ($item_info[0]->quantity >= $quant){
 								if (is_numeric($price)){
 									if (is_numeric($quant)){
 										$newQuant = $item_info[0]->quantity - $quant;
-										$this->auctions_model->new_auction($item_info[0]->item_id, $price, $quant, $item_info[0]->player);
+										$this->auctions_model->new_auction($item_info[0]->item_id, $price, $quant, $user_data[0]->id);
 										if ($newQuant > 0){
 											$this->player_items_model->set_quant($item_id, $newQuant);
 										}else{

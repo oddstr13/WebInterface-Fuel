@@ -20,8 +20,8 @@
 	$CI->load->model('player_items_model');
 	$CI->load->model('enchantments_model');
 	
-	$items = $CI->player_items_model->get_player_items($MyData->username);
-    $auctions = $CI->auctions_model->get_player_auctions($MyData->username);
+	$items = $CI->player_items_model->get_player_items($MyData->id);
+    $auctions = $CI->auctions_model->get_player_auctions($MyData->id);
 ?>
 
 

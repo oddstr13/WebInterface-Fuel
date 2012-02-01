@@ -19,6 +19,9 @@
 		$CI->load->library('tank_auth');
 		$CI->lang->load('tank_auth'); 
 		$CI->load->model('mail_model');
+		$CI->load->model('fee_model');
+		$CI->load->model('player_items_model');
+		$CI->load->model('players_model');
 	?>
 	<base href="<?php echo site_url()?>" />
 	<style type="text/css" title="currentStyle">
@@ -38,6 +41,24 @@
 	
 </head>
 <?php 
+	$lastFeeCheck = $CI->fee_model->get_last_fee();
+	
+	if (empty($lastFeeCheck)){
+		$CI->fee_model->new_fee();
+	}else{
+		$checks = $this->config->item('fee_checks_per_day');
+		$amount = $this->config->item('fee_per_item_per_day');
+		$amount_per_check = $amount/$checks;
+		$time_between_checks = 86400/$checks;
+		$players_info = $CI->players_model->list_items();
+		//print_r($players_info);
+	}
+	
+	
+	
+	
+	
+	
 	$MyUsername = $CI->session->userdata('username'); 
 	$MyData = $CI->users->get_user_by_username($MyUsername);
 ?>
