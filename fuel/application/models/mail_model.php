@@ -21,7 +21,7 @@ class Mail_model extends Base_module_model {
 	function get_player_mail($player)
     {
 		$this->db->join('wa_items', 'wa_items.id = wa_mail.item_id', 'left');
-		$this->db->join('wa_users', 'wa_users.username = wa_mail.player', 'left');
+		$this->db->join('wa_users', 'wa_users.id = wa_mail.player', 'left');
 		$this->db->select('wa_mail.id, wa_mail.item_id, wa_users.username AS player, wa_items.name AS name, wa_items.damage AS damage, wa_mail.quantity', FALSE);
 		$query = $this->db->get_where('wa_mail', array('wa_mail.player' => $player));
         return $query->result();

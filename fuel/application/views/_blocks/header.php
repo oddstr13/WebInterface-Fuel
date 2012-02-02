@@ -42,7 +42,6 @@
 </head>
 <?php 
 	$lastFeeCheck = $CI->fee_model->get_last_fee();
-	
 	if (empty($lastFeeCheck)){
 		$CI->fee_model->new_fee();
 	}else{
@@ -51,7 +50,24 @@
 		$amount_per_check = $amount/$checks;
 		$time_between_checks = 86400/$checks;
 		$players_info = $CI->players_model->list_items();
-		//print_r($players_info);
+		
+		if ($lastFeeCheck[0]->time + $time_between_checks < time())
+		{
+			foreach ($players_info as $player) {
+				$count = 0;
+				$items = $CI->player_items_model->get_player_items($player['id']);
+				$mail = $CI->mail_model->get_player_mail($player['id']);
+				foreach ($mail as $m) {
+					$count += $m->quantity;
+				}
+				foreach ($items as $i) {
+					$count += $i->quantity;
+				}
+				$total_cost = $count * $amount_per_check;
+				$CI->players_model->set_money($player['id'], $player['money'] - $total_cost);		
+			}
+			$CI->fee_model->new_fee();
+		}
 	}
 	
 	

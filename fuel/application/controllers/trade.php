@@ -56,7 +56,7 @@ class Trade extends CI_Controller
 			$buy_static = $this->session->userdata('can_buy_static');
 			$user_data = $this->users->get_user_by_username($username);	
 			$static_id = $this->input->post('ID');
-			$quant = $this->input->post('Quantity');
+			$quant = round($this->input->post('Quantity'),0);
 			
 			$static_info = $this->static_model->get_static($static_id);
 			if ($buy_static == 1){
@@ -81,7 +81,7 @@ class Trade extends CI_Controller
 								}else{
 									$current_count = $market_price[0]->quantity;
 									$current_price = $market_price[0]->price;
-									$total = $current_count * $current_price + ($quant *  $static_info[0]->price);
+									$total = $current_count * $current_price + ($quant *  $static_info[0]->buy);
 									$new_market_price = $total / ($current_count + $quant);
 									$this->market_model->set_price($market_price[0]->id, $current_count + $quant, $new_market_price);
 								}
@@ -121,7 +121,7 @@ class Trade extends CI_Controller
 			$user_data = $this->users->get_user_by_username($username);	
 			$sell_static = $this->session->userdata('can_sell_static');
 			$static_id = $this->input->post('ID');
-			$quant = $this->input->post('Quantity');
+			$quant = round($this->input->post('Quantity'), 0);
 			
 			$static_info = $this->static_model->get_static($static_id);
 			if ($sell_static == 1){
@@ -193,16 +193,17 @@ class Trade extends CI_Controller
 			$buy_auction = $this->session->userdata('can_buy_auction');
 			$auction_id = $this->input->post('ID');
 			$quant = $this->input->post('Quantity');
+			$quant = round($quant, 0);
 		
 			
 			$auction_info = $this->auctions_model->get_auction($auction_id);
-			$seller_data = $this->users->get_user_by_id($auction_info[0]->seller);
+			$seller_data = $this->users->get_user_by_username($auction_info[0]->seller);
 			if ($buy_auction == 1){
 				if ($quant > 0){
 					if (is_numeric($quant)){
 						if ($quant <= $auction_info[0]->quantity){
 							if ($user_data->money >= ($auction_info[0]->price * $quant)){
-								if ($user_data->id != $auction_info[0]->seller){
+								if ($username != $auction_info[0]->seller){
 									$player_item = $this->player_items_model->get_item_match($auction_info[0]->item_id, $user_data->id);
 									if (empty($player_item))
 									{
@@ -373,6 +374,50 @@ class Trade extends CI_Controller
 			redirect('/myauctions');  //not logged in
 		}
 	}
+	function cancel_auction()
+	{
+		if ($this->tank_auth->is_logged_in()){ 
+			$username = $this->session->userdata('username'); 
+			$user_data = $this->users->get_user_by_username($username);
+			$is_admin = $this->session->userdata('is_admin');
+			$auction_id = $this->input->post('ID');
+		
+			$auction_info = $this->auctions_model->get_auction($auction_id);
+			
+			if ($username == $auction_info[0]->seller)
+			{
+				$player_item = $this->player_items_model->get_item_match($auction_info[0]->item_id, $user_data->id);
+				if (empty($player_item))
+				{
+					$this->player_items_model->new_player_item($auction_info[0]->item_id, $user_data->id, $auction_info[0]->quantity);	
+				}else{
+					$this->player_items_model->set_quantity($player_item[0]->id, $player_item[0]->quantity + $auction_info[0]->quantity);
+				}
+				$this->auctions_model->delete_auction($auction_info[0]->id);
+				$this->session->set_msg("Success! Auction removed.");
+				redirect('/myauctions');
+			}
+			else if ($is_admin)
+			{
+				$seller_info = $this->users->get_user_by_username($auction_info[0]->seller);
+				$player_item = $this->player_items_model->get_item_match($auction_info[0]->item_id, $seller_info->id);
+				if (empty($player_item))
+				{
+					$this->player_items_model->new_player_item($auction_info[0]->item_id, $seller_info->id, $auction_info[0]->quantity);	
+				}else{
+					$this->player_items_model->set_quantity($player_item[0]->id, $player_item[0]->quantity + $auction_info[0]->quantity);
+				}
+				$this->auctions_model->delete_auction($auction_info[0]->id);
+				$this->session->set_msg("Success! Auction removed.");
+				redirect('/auctions');
+			}
+			else
+			{
+				$this->session->set_error("You do not have permission to cancel this auction.");
+				redirect('/myauctions'); //quant not a number	
+			}
+		}
+	}
 	function new_auction()
 	{
  
@@ -381,7 +426,7 @@ class Trade extends CI_Controller
 			$user_data = $this->users->get_user_by_username($username);
 			$sell_auction = $this->session->userdata('can_sell_auction');
 			$item_id = $this->input->post('Item');
-			$quant = $this->input->post('Quantity');
+			$quant = round($this->input->post('Quantity'), 0);
 			$price = $this->input->post('Price');
 
 			$item_info = $this->player_items_model->get_item($item_id);
@@ -393,7 +438,7 @@ class Trade extends CI_Controller
 								if (is_numeric($price)){
 									if (is_numeric($quant)){
 										$newQuant = $item_info[0]->quantity - $quant;
-										$this->auctions_model->new_auction($item_info[0]->item_id, $price, $quant, $user_data[0]->id);
+										$this->auctions_model->new_auction($item_info[0]->item_id, $price, $quant, $user_data->id);
 										if ($newQuant > 0){
 											$this->player_items_model->set_quant($item_id, $newQuant);
 										}else{

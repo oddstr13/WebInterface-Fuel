@@ -128,7 +128,7 @@
 						<td align="center"><?php echo $auction->price; ?></td>
 						<td align="center"><?php echo ($auction->price * $auction->quantity); ?></td>
 						<td align="center"><?php if ($mark > 0){echo round(($auction->price/$mark)*100, 2);}else{echo 0;} ?></td>
-						<td align="center"><?php echo "cancel"; ?></td>
+						<td align="center"><form action='trade/cancel_auction' method='post'><input type='hidden' name='ID' value='<?php echo $auction->id; ?>' /><input type='submit' value='Cancel Auction' class='button' /></form></td>
 			  </tr>
 <?php 
 				} 

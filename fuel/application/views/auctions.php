@@ -64,8 +64,9 @@
 				foreach ($auctions as $auction) {
 					if (time() < ($auction->started + (86400 * 10))){
 						$enchantments = $CI->enchantments_model->get_item_enchantments($auction->item->id);
-						$base = $CI->items_model->isTrueDamage($auction->name);
+						$base = $CI->items_model->isTrueDamage($auction->item->name);
 						$market = $CI->market_model->get_market_price($auction->item_id);
+						$seller = $CI->users->get_user_by_id($auction->seller, 1);
 						if (empty($market)){
 							$mark = 0;
 						}else{
@@ -84,7 +85,7 @@
 								}
 						?>
                         	</td>
-							<td align="center"><img width="32px" src="http://minotar.net/avatar/<?php echo $auction->seller; ?>" /><br/><?php echo $auction->seller; ?></td>
+							<td align="center"><img width="32px" src="http://minotar.net/avatar/<?php echo $seller->username; ?>" /><br/><?php echo $seller->username; ?></td>
 							<td align="center"><?php echo date('j/m/Y H:i:s', $auction->started + (10 * 86400)); ?></td>
 							<td align="center"><?php echo $auction->quantity; ?></td>
 							<td align="center"><?php echo $auction->price; ?></td>
@@ -93,7 +94,7 @@
                             <?php if ($this->session->userdata('can_buy_auction') == 1){ ?>
                  	       <td align="center"><form action='trade/buy_item' method='post'><input type='text' size="6" name='Quantity' onKeyPress='return numbersonly(this, event)' class='input'><input type='hidden' name='ID' value='<?php echo $auction->id; ?>' /><input type='submit' value='Buy' class='button' /></form></td>
                            <?php } if ($this->session->userdata('is_admin') == 1){ ?>
-							<td align="center"><?php echo "cancel"; ?></td>
+							<td align="center"><form action='trade/cancel_auction' method='post'><input type='hidden' name='ID' value='<?php echo $auction->id; ?>' /><input type='submit' value='Cancel Auction' class='button' /></form></td>
                             <?php } ?>
 						</tr>
 <?php 

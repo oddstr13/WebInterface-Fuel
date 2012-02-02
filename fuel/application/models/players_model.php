@@ -17,14 +17,14 @@ class Players_model extends Base_module_model {
 	}
 	function set_money($name, $amount)
 	{
-		$this->db->update('wa_users', array('money' => $amount), array('username' => $name));	
+		$this->db->update('wa_users', array('money' => $amount), array('id' => $name));	
 	}
 	function set_sales($name, $sold, $earnt)
 	{
-		$this->db->update('wa_users', array('sold' => $sold, 'earnt' => $earnt), array('username' => $name));	
+		$this->db->update('wa_users', array('sold' => $sold, 'earnt' => $earnt), array('id' => $name));	
 	}
 	function set_purchases($name, $bought, $spent)
 	{
-		$this->db->update('wa_users', array('bought' => $bought, 'spent' => $spent), array('username' => $name));	
+		$this->db->update('wa_users', array('bought' => $bought, 'spent' => $spent), array('id' => $name));	
 	}
 }
