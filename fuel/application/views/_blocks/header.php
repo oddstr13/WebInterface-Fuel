@@ -22,6 +22,7 @@
 		$CI->load->model('fee_model');
 		$CI->load->model('player_items_model');
 		$CI->load->model('players_model');
+		$CI->load->model('iconomy_model');
 	?>
 	<base href="<?php echo site_url()?>" />
 	<style type="text/css" title="currentStyle">
@@ -47,6 +48,11 @@
 	}else{
 		$checks = $this->config->item('fee_checks_per_day');
 		$amount = $this->config->item('fee_per_item_per_day');
+		$useIcon = $this->config->item('iconomy_table_name');
+		$iconTable = "";
+		if ($useIcon){
+			$iconTable = $this->config->item('iconomy_table_name');
+		}
 		$amount_per_check = $amount/$checks;
 		$time_between_checks = 86400/$checks;
 		$players_info = $CI->players_model->list_items();
@@ -64,7 +70,12 @@
 					$count += $i->quantity;
 				}
 				$total_cost = $count * $amount_per_check;
-				$CI->players_model->set_money($player['id'], $player['money'] - $total_cost);		
+				if ($useIcon){
+					$iconInfo = $CI->iconomy_model->get_money($player['username']);
+					$CI->iconomy_model->set_money($player['username'], $iconInfo->balance - $total_cost);
+				}else{		
+					$CI->players_model->set_money($player['id'], $player['money'] - $total_cost);	
+				}
 			}
 			$CI->fee_model->new_fee();
 		}
@@ -76,6 +87,9 @@
 	
 	
 	$MyUsername = $CI->session->userdata('username'); 
+	if ($useIcon){
+		$MyIcon = $CI->iconomy_model->get_money($MyUsername);	
+	}
 	$MyData = $CI->users->get_user_by_username($MyUsername);
 ?>
 
@@ -95,7 +109,14 @@
   </tr>
   <tr>
     <td align="left">Money</td>
-    <td align="left"><?php echo fuel_var('Currency Prefix'); ?><?php echo $MyData->money; ?></td>
+    <td align="left"><?php echo fuel_var('Currency Prefix'); ?><?php 
+		if($useIcon){
+			echo $MyIcon->balance;
+		}else{
+			echo $MyData->money; 
+		}
+	
+	?></td>
   </tr>
   <tr>
     <td align="left">Mail</td>
@@ -107,7 +128,6 @@
   <tr>
     <td><a href="/auth/logout">[Logout]</a></td>
     <td align="left"><a href="/change_email">[Change Email]</a></td>
-    <td align="left"><a href="/unregister">[Unregister]</a></td>
   </tr>
   </table>
 

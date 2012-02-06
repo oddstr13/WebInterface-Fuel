@@ -29,7 +29,7 @@ $config['modules_allowed'] = array(
 	);
 
 // default password to alert against
-$config['admin_enabled'] = FALSE;
+$config['admin_enabled'] = TRUE;
 
 // will auto search view files. 
 // If the URI is about/history and the about/history view does not exist but about does, it will render the about page

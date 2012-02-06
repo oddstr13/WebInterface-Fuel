@@ -23,4 +23,10 @@ $config['modules']['projects'] = array(
 
 $config['modules']['items'] = array();
 $config['modules']['auctions'] = array();
+$config['modules']['players'] = array();
+$config['modules']['market'] = array();
+$config['modules']['mail'] = array();
+$config['modules']['fee'] = array();
+$config['modules']['static'] = array();
+$config['modules']['player_items'] = array();
 $config['modules']['enchantments'] = array();

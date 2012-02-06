@@ -18,6 +18,7 @@ class Trade extends CI_Controller
 		$this->load->model('players_model');
 		$this->load->model('market_model');
 		$this->load->model('mail_model');
+		$this->load->model('iconomy_model');
 		$this->load->model('enchantments_model');
 		$this->load->model('player_items_model');
 		
@@ -35,7 +36,8 @@ class Trade extends CI_Controller
 			$item_id = $this->input->post('ID');
 			
 			$item_info = $this->player_items_model->get_item($item_id);
-			if ($item_info[0]->player == $user_data->id){
+			//print_r($item_info);
+			if ($item_info[0]->player == $user_data->username){
 				$this->mail_model->new_mail($item_info[0]->item_id, $user_data->id, $item_info[0]->quantity);
 				$this->player_items_model->delete_item($item_info[0]->id);
 				$this->session->set_msg("Success! Items send to in-game mail box.");
@@ -57,6 +59,12 @@ class Trade extends CI_Controller
 			$user_data = $this->users->get_user_by_username($username);	
 			$static_id = $this->input->post('ID');
 			$quant = round($this->input->post('Quantity'),0);
+			$useIcon = $this->config->item('iconomy_table_name');
+			$iconTable = "";
+			if ($useIcon){
+				$iconTable = $this->config->item('iconomy_table_name');
+				$iconomy_data = $this->iconomy_model->get_money($username);	
+			}
 			
 			$static_info = $this->static_model->get_static($static_id);
 			if ($buy_static == 1){
@@ -71,7 +79,13 @@ class Trade extends CI_Controller
 								}else{
 									$this->player_items_model->set_quantity($player_item[0]->id, $player_item[0]->quantity + $quant);
 								}
-								$this->players_model->set_money($user_data->id, $user_data->money - ($static_info[0]->buy * $quant));	
+								
+								if ($useIcon){
+									$this->iconomy_model->set_money($username, $iconomy_data->balance - ($static_info[0]->buy * $quant));
+								}else{
+									$this->players_model->set_money($user_data->id, $user_data->money - ($static_info[0]->buy * $quant));
+								}
+									
 								$this->players_model->set_purchases($user_data->id, $user_data->bought + $quant, $user_data->spent + ($static_info[0]->buy * $quant));
 								
 								$market_price = $this->market_model->get_market_price($static_info[0]->item_id);
@@ -122,6 +136,12 @@ class Trade extends CI_Controller
 			$sell_static = $this->session->userdata('can_sell_static');
 			$static_id = $this->input->post('ID');
 			$quant = round($this->input->post('Quantity'), 0);
+			$useIcon = $this->config->item('iconomy_table_name');
+			$iconTable = "";
+			if ($useIcon){
+				$iconTable = $this->config->item('iconomy_table_name');
+				$iconomy_data = $this->iconomy_model->get_money($username);	
+			}
 			
 			$static_info = $this->static_model->get_static($static_id);
 			if ($sell_static == 1){
@@ -133,7 +153,11 @@ class Trade extends CI_Controller
 							{
 								if ($player_item[0]->quantity >= $quant)
 								{
-									$this->players_model->set_money($user_data->id, $user_data->money + ($static_info[0]->sell * $quant));	
+									if ($useIcon){
+										$this->iconomy_model->set_money($username, $iconomy_data->balance - ($static_info[0]->sell * $quant));
+									}else{
+										$this->players_model->set_money($user_data->id, $user_data->money + ($static_info[0]->sell * $quant));	
+									}
 									$this->players_model->set_sales($user_data->id, $user_data->sold + $quant, $user_data->earnt + ($static_info[0]->sell * $quant));
 									$newQuant = $player_item[0]->quantity - $quant;
 									if ($newQuant > 0){
@@ -189,15 +213,23 @@ class Trade extends CI_Controller
 	{
 		if ($this->tank_auth->is_logged_in()){ 
 			$username = $this->session->userdata('username'); 
-			$user_data = $this->users->get_user_by_username($username);	
+			$user_data = $this->users->get_user_by_username($username);
 			$buy_auction = $this->session->userdata('can_buy_auction');
 			$auction_id = $this->input->post('ID');
 			$quant = $this->input->post('Quantity');
 			$quant = round($quant, 0);
-		
-			
 			$auction_info = $this->auctions_model->get_auction($auction_id);
 			$seller_data = $this->users->get_user_by_username($auction_info[0]->seller);
+			$useIcon = $this->config->item('iconomy_table_name');
+			$iconTable = "";
+			if ($useIcon){
+				$iconTable = $this->config->item('iconomy_table_name');
+				$iconomy_data = $this->iconomy_model->get_money($username);
+				$seller_iconomy_data = $this->iconomy_model->get_money($auction_info[0]->seller);	
+			}
+		
+			
+			
 			if ($buy_auction == 1){
 				if ($quant > 0){
 					if (is_numeric($quant)){
@@ -217,8 +249,13 @@ class Trade extends CI_Controller
 									}else{
 										$this->auctions_model->set_quantity($auction_info[0]->id, $auction_info[0]->quantity - $quant);
 									}
-									$this->players_model->set_money($user_data->id, $user_data->money - ($auction_info[0]->price * $quant));
-									$this->players_model->set_money($seller_data->id, $seller_data->money + ($auction_info[0]->price * $quant));
+									if ($useIcon){
+										$this->iconomy_model->set_money($user_data->username, $iconomy_data->balance - ($auction_info[0]->price * $quant));
+										$this->iconomy_model->set_money($seller_data->username, $seller_iconomy_data->balance + ($auction_info[0]->price * $quant));
+									}else{
+										$this->players_model->set_money($user_data->id, $user_data->money - ($auction_info[0]->price * $quant));
+										$this->players_model->set_money($seller_data->id, $seller_data->money + ($auction_info[0]->price * $quant));
+									}
 								
 									$this->players_model->set_purchases($user_data->id, $user_data->bought + $quant, $user_data->spent + ($auction_info[0]->price * $quant));
 									$this->players_model->set_sales($seller_data->id, $seller_data->sold + $quant, $seller_data->earnt + ($auction_info[0]->price * $quant));

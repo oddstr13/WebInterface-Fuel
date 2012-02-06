@@ -9,6 +9,8 @@
 */
 $config['fee_per_item_per_day'] = 0.2;
 $config['fee_checks_per_day'] = 4;
+$config['use_iconomy_database'] = false;
+$config['iconomy_table_name'] = "iConomy";
 
 
 

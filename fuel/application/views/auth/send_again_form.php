@@ -11,6 +11,7 @@ $email = array(
 );
 ?>
 <?php echo form_open($this->uri->uri_string()); ?>
+<h2 align="center">Send activation link again</h2>
 <table>
 	<tr>
 		<td><?php echo form_label('Email Address', $email['id']); ?></td>
